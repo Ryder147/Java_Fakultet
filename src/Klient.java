@@ -1,14 +1,13 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 class Klient
 {
-    String imie;
-    String nazwisko;
+    String login;
+    String haslo;
     String[] wypozyczony=new String[0];
-    public Klient(String imie,String nazwisko){
-        this.imie=imie;
-        this.nazwisko=nazwisko;
+    public Klient(String login, String haslo){
+        this.login = login;
+        this.haslo =haslo;
     }
 
 
@@ -18,13 +17,29 @@ class Klient
 
 
 class Wypozyczalnia {
-    String[] samochody;
-    String[] samochodywyp;
+    String[] ksiazki;
+    String[] ksiazkiwyp;
+    Klient[] klienci=new Klient[0];
     int indexwyp=0;
 
     public Wypozyczalnia(String[] samochody, String[] samochodywyp) {
-        this.samochody = samochody;
-        this.samochodywyp = samochodywyp;
+        this.ksiazki = samochody;
+        this.ksiazkiwyp = samochodywyp;
+    }
+
+    void dodajksiazke(String samochod){
+        String[] proxyArray = new String[this.ksiazki.length + 1];
+
+        for (int i = 0; i < proxyArray.length; i++) {
+
+            if (i != ksiazki.length) {
+                proxyArray[i]=this.ksiazki[i];
+            }else{
+                proxyArray[i] = samochod;
+            }
+        }
+        this.ksiazki = proxyArray;
+
     }
 
     void wypozycz(Klient k, int a){
@@ -32,12 +47,12 @@ class Wypozyczalnia {
 
         int rm_index = a;
 
-        if (this.samochody == null || rm_index < 0 || rm_index >= this.samochody.length) {
+        if (this.ksiazki == null || rm_index < 0 || rm_index >= this.ksiazki.length) {
             System.out.println("Nie ma takiego samochodu");
             return;
         }
 
-        String outwyp=this.samochody[rm_index];
+        String outwyp=this.ksiazki[rm_index];
 
         /*
         k.wypozyczony[indexwyp]=this.samochody[rm_index];
@@ -53,34 +68,34 @@ class Wypozyczalnia {
             if (i != k.wypozyczony.length) {
                 proxyArray1[i]=k.wypozyczony[i];
             }else{
-                proxyArray1[i] = this.samochody[rm_index];
+                proxyArray1[i] = this.ksiazki[rm_index];
             }
         }
         k.wypozyczony=proxyArray1;
 
-        String[] proxyArray2 = new String[this.samochodywyp.length+1];
+        String[] proxyArray2 = new String[this.ksiazkiwyp.length+1];
         for (int i = 0; i < proxyArray2.length; i++) {
 
-            if (i != this.samochodywyp.length) {
-                proxyArray2[i]=this.samochodywyp[i];
+            if (i != this.ksiazkiwyp.length) {
+                proxyArray2[i]=this.ksiazkiwyp[i];
             }else{
-                proxyArray2[i] = this.samochody[rm_index];
+                proxyArray2[i] = this.ksiazki[rm_index];
             }
         }
-        this.samochodywyp=proxyArray2;
+        this.ksiazkiwyp =proxyArray2;
 
 
-        String[] proxyArray = new String[this.samochody.length - 1];
+        String[] proxyArray = new String[this.ksiazki.length - 1];
         int j = 0;
-        for (int i = 0; i < this.samochody.length; i++) {
+        for (int i = 0; i < this.ksiazki.length; i++) {
             if (i != rm_index) {
-                proxyArray[j] = this.samochody[i];
+                proxyArray[j] = this.ksiazki[i];
                 j++;
             }
 
 
         }
-        this.samochody = proxyArray;
+        this.ksiazki = proxyArray;
         System.out.println("Wypożyczyłeś:\n"+outwyp);
 
 
@@ -88,36 +103,36 @@ class Wypozyczalnia {
 
     void zwroc(Klient k,int a){
 
-        if(a>samochodywyp.length || a<0){
+        if(a> ksiazkiwyp.length || a<0){
             System.out.println("\nNie ma takiego samochodu! ");
             return;
         }
 
 
-        String[] proxyArray = new String[this.samochody.length + 1];
+        String[] proxyArray = new String[this.ksiazki.length + 1];
 
         for (int i = 0; i < proxyArray.length; i++) {
 
-            if (i != samochody.length) {
-                proxyArray[i]=this.samochody[i];
+            if (i != ksiazki.length) {
+                proxyArray[i]=this.ksiazki[i];
             }else{
                 proxyArray[i] = k.wypozyczony[a];
             }
         }
-        this.samochody = proxyArray;
+        this.ksiazki = proxyArray;
 
 
-        String[] proxyArray2 = new String[this.samochodywyp.length - 1];
+        String[] proxyArray2 = new String[this.ksiazkiwyp.length - 1];
         int g = 0;
-        for (int i = 0; i < this.samochodywyp.length; i++) {
-            if (this.samochodywyp[i] != k.wypozyczony[a]) {
-                proxyArray2[g] = this.samochodywyp[i];
+        for (int i = 0; i < this.ksiazkiwyp.length; i++) {
+            if (this.ksiazkiwyp[i] != k.wypozyczony[a]) {
+                proxyArray2[g] = this.ksiazkiwyp[i];
                 g++;
             }
 
 
         }
-        this.samochodywyp = proxyArray2;
+        this.ksiazkiwyp = proxyArray2;
 
         String[] proxyArray1=new String[k.wypozyczony.length-1];
         int j=0;
@@ -148,12 +163,14 @@ class Wypozyczalnia {
 
 
     public static void main(String[] args) {
+
+
         Scanner scan = new Scanner(System.in);
 
-        Klient k1 = new Klient("Kamil", "Praula");
+        Klient k1 = new Klient("Kamil", "elo123");
 
 
-        String[] samochody = {"BMW seria 3 250km 220 zł/dzień", "Mercedes klasa C 220km 200 zł/dzień", "Opel Insygnia 150km 100 zł/dzień", "Ford FocusRS 350km 250 zł/dzień"};
+        String[] samochody = {"Henryk Sienkiewicz Ogniem i Mieczem ", "Ernest Hemingway Stary Człowiek i Morze", "Henryk Sienkiewicz Ogniem i mieczem", "Henryk Sienkiewicz Potop","Henryk Sienkiewicz Pan Wołodyjowski"};
         String[] samochodywyp = new String[0];
         Wypozyczalnia w1 = new Wypozyczalnia(samochody, samochodywyp);
 
@@ -161,31 +178,26 @@ class Wypozyczalnia {
 
         boolean dziala = true;
         while (dziala) {
-            System.out.println("Co chcesz zrobić:\n 1-Wypożyczyć samochów\n 2-Zwrócić samochód\n 3-Sprawdzić co masz wypożyczone\n 4-Zakończyć działanie programu ");
+            System.out.println("Co chcesz zrobić:\n 1-Wypożyczyć książkę\n 2-Zwrócić książkę\n 3-Sprawdzić co masz wypożyczone\n 4-Zakończyć działanie programu ");
             int opcja=scan.nextInt();
             if(opcja==1) {
-/*
-                if(k1.wypozyczony!=null){
-                    System.out.println("Można wypożyczyć tylko jeden samochód na raz.");
-                    continue;
-                }else {
-                */
-                    System.out.println("Samochody dostępne do wypożyczenia:\n");
-                    for (int i = 0; i < w1.samochody.length; i++) {
-                        System.out.println(i+" "+w1.samochody[i]);
+
+                    System.out.println("ksiazki do wypożyczenia:\n");
+                    for (int i = 0; i < w1.ksiazki.length; i++) {
+                        System.out.println(i+" "+w1.ksiazki[i]);
                     }
-                    if (w1.samochodywyp.length != 0) {
-                        System.out.println("\nSamochody już wypożyczone :");
-                        for (int i = 0; i < w1.samochodywyp.length; i++) {
-                            if (w1.samochodywyp[i] != null)
-                                System.out.println(i+" "+w1.samochodywyp[i]);
+                    if (w1.ksiazkiwyp.length != 0) {
+                        System.out.println("\nKsiążki już wypożyczone :");
+                        for (int i = 0; i < w1.ksiazkiwyp.length; i++) {
+                            if (w1.ksiazkiwyp[i] != null)
+                                System.out.println(i+" "+w1.ksiazkiwyp[i]);
                         }
 
                    }
-                    System.out.println("\nWybierz który samochód (0,1,2,...) albo 360 jeśli chcesz anulować");
+                    System.out.println("\nWybierz który samochód (0,1,2,...) albo 60 jeśli chcesz anulować");
                     scan.nextLine();
                     int wybors = scan.nextInt();
-                    if(wybors<360){
+                    if(wybors<60){
                         w1.wypozycz(k1, wybors);
                     }
 
@@ -199,10 +211,12 @@ class Wypozyczalnia {
                     for (int i = 0; i < k1.wypozyczony.length; i++) {
                         System.out.println(i+" "+k1.wypozyczony[i]);
                     }
-                    System.out.println("\nWybierz który samochód (0,1,2,...) ");
+                    System.out.println("\nWybierz który samochód (0,1,2,...) albo 60 jeśli chcesz anulować ");
                     scan.nextLine();
                     int wybors = scan.nextInt();
-                    w1.zwroc(k1,wybors);
+                    if(wybors<60){
+                        w1.zwroc(k1,wybors);
+                    }
                 }else{
                     System.out.println("\nNie masz wypożyczonych samochodów. ");
                 }
