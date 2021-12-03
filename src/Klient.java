@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 class Klient
 {
@@ -39,6 +40,45 @@ class Wypozyczalnia {
         int wybor=scan.nextInt();
 
         return klienci[wybor];
+
+    }
+    void Rejestracja(){
+        while(true){
+        System.out.println("Podaj login do nowego konta:\n!!!Jeśli po wpisaniu loginu i zatwierdzeniu enterem nie chce od ciebie hasła to wpisz login jeszcze raz\n");
+        scan.nextLine();
+        String nlogin= scan.nextLine();
+        if(!(czyZawiera(nlogin))){
+            System.out.println("Podaj hasło do nowego konta:\n");
+            String nhaslo= scan.nextLine();
+            Klient nk=new Klient(nlogin,nhaslo);
+
+            Klient[] proxyArray = new Klient[this.klienci.length + 1];
+
+            for (int i = 0; i < proxyArray.length; i++) {
+
+                if (i != klienci.length) {
+                    proxyArray[i]=this.klienci[i];
+                }else{
+                    proxyArray[i] = nk;
+                }
+            }
+            this.klienci = proxyArray;
+            break;
+
+        }
+        else{
+            System.out.println("Login jest zajęty ");
+        }
+
+        }
+    }
+    boolean czyZawiera(String s){
+        for (Klient a: this.klienci) {
+            if(a.login.equals(s)){
+                return true;
+            }
+        }
+        return false;
 
     }
 
@@ -175,6 +215,7 @@ class Wypozyczalnia {
 
 
 
+
     public static void main(String[] args) {
 
 
@@ -192,7 +233,7 @@ class Wypozyczalnia {
 
 
         while (true) {
-            System.out.println("Co chcesz zrobić:\n 1-zalogować się\n 2-założyć konto\n 3-Dodać książkę do księgozbioru\n 4-zakończyć działanie programu");
+            System.out.println("\nCo chcesz zrobić:\n 1-zalogować się\n 2-założyć konto\n 3-Dodać książkę do księgozbioru\n 4-Wyświetlić wszystkie książki\n 5-zakończyć działanie programu");
             int opcja1=scan.nextInt();
             if(opcja1==1) {
 
@@ -295,13 +336,37 @@ class Wypozyczalnia {
                     continue;
                 }
             }
+            else if(opcja1==2){
+                w1.Rejestracja();
+
+            }
+
             else if(opcja1==3){
                 System.out.println("Najpierw Enter potem");
                 w1.dodajksiazke();
             }
 
             else if(opcja1==4){
+                System.out.println("Ksiażki do wypożyczenia:\n");
+                for (int i = 0; i < w1.ksiazki.length; i++) {
+                    System.out.println(i + " " + w1.ksiazki[i]);
+                }
+                if (w1.ksiazkiwyp.length != 0) {
+                    System.out.println("\nKsiążki już wypożyczone :");
+                    for (int i = 0; i < w1.ksiazkiwyp.length; i++) {
+                        if (w1.ksiazkiwyp[i] != null)
+                            System.out.println(i + " " + w1.ksiazkiwyp[i]);
+                    }
+
+                }
+
+            }
+
+            else if(opcja1==5){
                 break;
+            }
+            else{
+                System.out.println("Nie ma takiej opcji!");
             }
         }
 
