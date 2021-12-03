@@ -21,26 +21,31 @@ class Wypozyczalnia {
     String[] ksiazki;
     String[] ksiazkiwyp;
     Klient[] klienci=new Klient[2];
-    int indexwyp=0;
+
+    Scanner scan = new Scanner(System.in);
 
     public Wypozyczalnia(String[] samochody, String[] samochodywyp) {
         this.ksiazki = samochody;
         this.ksiazkiwyp = samochodywyp;
     }
     Klient Logowanie(){
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Na które konto chcesz się zalogować(0,1... albo 60 jeśli chcesz anulować) :\n");
+
+        System.out.println("Na które konto chcesz się zalogować(0,1...) :\n");
         int licznik=0;
         for (Klient a:this.klienci) {
             System.out.println(licznik+" "+a.login);
             licznik+=1;
         }
         int wybor=scan.nextInt();
+
         return klienci[wybor];
 
     }
 
-    void dodajksiazke(String ksiazka){
+    void dodajksiazke(){
+        System.out.println("Wpisz jaką książkę chcesz dodać: AUTOR-TYTUŁ");
+        scan.nextLine();
+        String ksiazka=scan.nextLine();
         String[] proxyArray = new String[this.ksiazki.length + 1];
 
         for (int i = 0; i < proxyArray.length; i++) {
@@ -61,18 +66,11 @@ class Wypozyczalnia {
         int rm_index = a;
 
         if (this.ksiazki == null || rm_index < 0 || rm_index >= this.ksiazki.length) {
-            System.out.println("Nie ma takiego samochodu");
+            System.out.println("Nie ma takiej książki");
             return;
         }
 
         String outwyp=this.ksiazki[rm_index];
-
-        /*
-        k.wypozyczony[indexwyp]=this.samochody[rm_index];
-        this.samochodywyp[indexwyp]=this.samochody[rm_index];
-        indexwyp++;
-
-         */
 
 
         String[] proxyArray1 = new String[k.wypozyczony.length+1];
@@ -117,7 +115,7 @@ class Wypozyczalnia {
     void zwroc(Klient k,int a){
 
         if(a> ksiazkiwyp.length || a<0){
-            System.out.println("\nNie ma takiego samochodu! ");
+            System.out.println("\nNie ma takiej książki! ");
             return;
         }
 
@@ -156,15 +154,6 @@ class Wypozyczalnia {
             }
         }
         k.wypozyczony=proxyArray1;
-        /*
-        indexwyp--;
-        this.samochodywyp[indexwyp]=null;
-        System.out.println("Zwróciłeś:\n"+k.wypozyczony);
-        k.wypozyczony=null;
-
-         */
-
-
 
 
     }
@@ -194,16 +183,16 @@ class Wypozyczalnia {
         Klient k1 = new Klient("Kamil", "elo123");
         Klient k2=new Klient("Kacper","luka");
 
-        String[] książki = {"George R.R. Martina Pieśń Lodu i Ognia", "Ernest Hemingway Stary Człowiek i Morze", "Henryk Sienkiewicz Ogniem i Mieczem", "Henryk Sienkiewicz Potop","Henryk Sienkiewicz Pan Wołodyjowski"};
+        String[] książki = {"George R.R. Martina-Pieśń Lodu i Ognia", "Ernest Hemingway-Stary Człowiek i Morze", "Henryk Sienkiewicz-Ogniem i Mieczem", "Henryk Sienkiewicz-Potop","Henryk Sienkiewicz-Pan Wołodyjowski"};
         String[] ksiazkiwyp = new String[0];
         Wypozyczalnia w1 = new Wypozyczalnia(książki, ksiazkiwyp);
         w1.klienci[0]=k1;
         w1.klienci[1]=k2;
 
 
-        //boolean dziala = true;
+
         while (true) {
-            System.out.println("Co chcesz zrobić:\n 1-zalogować się\n 2-założyć konto\n 3-zakończyć działanie programu");
+            System.out.println("Co chcesz zrobić:\n 1-zalogować się\n 2-założyć konto\n 3-Dodać książkę do księgozbioru\n 4-zakończyć działanie programu");
             int opcja1=scan.nextInt();
             if(opcja1==1) {
 
@@ -215,7 +204,7 @@ class Wypozyczalnia {
 
 
                     while (true) {
-                        System.out.println("Co chcesz zrobić:\n 1-Wypożyczyć książkę\n 2-Zwrócić książkę\n 3-Sprawdzić co masz wypożyczone\n 4-Wylogować się ");
+                        System.out.println("Co chcesz zrobić:\n 1-Wypożyczyć książkę\n 2-Zwrócić książkę\n 3-Sprawdzić co masz wypożyczone\n 4-Dodać książkę do księgozbioru\n 5-Wylogować się ");
                         int opcja = scan.nextInt();
                         if (opcja == 1) {
 
@@ -247,7 +236,7 @@ class Wypozyczalnia {
                                 }
                             }
                         }
-                        if (opcja == 2) {
+                         else if (opcja == 2) {
 
                             if (k1.wypozyczony.length != 0) {
                                 System.out.println("Którą książkę chcesz zwrócić?\n ");
@@ -275,7 +264,7 @@ class Wypozyczalnia {
 
 
                         }
-                        if (opcja == 3) {
+                         else if (opcja == 3) {
                             if (k1.wypozyczony.length != 0) {
                                 System.out.println("Masz wypożyczone:\n");
 
@@ -286,12 +275,17 @@ class Wypozyczalnia {
                                 System.out.println("Nie masz wypożyczonych książek.");
                             }
                         }
+                        else if(opcja==4){
+                            w1.dodajksiazke();
+                        }
 
-
-                        if (opcja == 4) {
+                        else if (opcja == 5) {
 
                             break;
 
+                        }
+                        else{
+                            System.out.println("Nie ma takiej opcji");
                         }
 
 
@@ -301,7 +295,12 @@ class Wypozyczalnia {
                     continue;
                 }
             }
-            if(opcja1==3){
+            else if(opcja1==3){
+                System.out.println("Najpierw Enter potem");
+                w1.dodajksiazke();
+            }
+
+            else if(opcja1==4){
                 break;
             }
         }
