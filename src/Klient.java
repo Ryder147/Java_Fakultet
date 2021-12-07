@@ -222,7 +222,7 @@ class Wypozyczalnia {
         Scanner scan = new Scanner(System.in);
 
         Klient k1 = new Klient("Kamil", "elo123");
-        Klient k2=new Klient("Kacper","luka");
+        Klient k2=new Klient("Kacper","elo123");
 
         String[] książki = {"George R.R. Martina-Pieśń Lodu i Ognia", "Ernest Hemingway-Stary Człowiek i Morze", "Henryk Sienkiewicz-Ogniem i Mieczem", "Henryk Sienkiewicz-Potop","Henryk Sienkiewicz-Pan Wołodyjowski"};
         String[] ksiazkiwyp = new String[0];
